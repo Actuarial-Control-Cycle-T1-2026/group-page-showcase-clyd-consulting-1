@@ -5,8 +5,14 @@ _"Tell me and I forget. Teach me and I remember. Involve me and I learn." – Be
 
 ---
 
-### Congrats on completing the [2026 SOA Research Challenge](https://www.soa.org/research/opportunities/2026-student-research-case-study-challenge/)!
+### Project Overview
+This project develops actuarial insurance solutions for Cosmic Quarry Mining Corporation (CQMC), focusing on pricing, risk assessment, and product design across its interstellar mining operations. The aim is to provide data-driven recommendations to Galaxy General Insurance Company on how to structure insurance products that effectively manage risk while maintaining profitability.
 
+The analysis covers four key hazard areas, each representing a distinct source of operational risk:
+- Equipment Failure: Low-frequency, high-severity breakdowns of specialised mining machinery, requiring protection against large, unexpected losses.
+- Cargo Loss: 
+- Workers’ Compensation: 
+- Business Interruption: 
 
 > Now it's time to build your own website to showcase your work.  
 > Creating a website using GitHub Pages is simple and a great way to present your project.
