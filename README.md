@@ -25,7 +25,10 @@ The analysis covers four key hazard areas, each representing a distinct source o
 ### Risk Assessment
 The Helionis Cluster faces higher operational strain due to dense debris and unstable conditions, increasing the likelihood of cargo loss, equipment damage, worker injury, and business interruption. The Bayesia System is relatively more controlled, with stable routes reducing operational risk, although high solar radiation remains a key driver of severe losses. Oryn Delta is the most fragile, as navigation instability, low visibility, and communication limitations amplify failures across all hazard areas. Overall, Helionis and Oryn Delta present higher risk, while Bayesia is comparatively more resilient but still exposed to radiation-driven severity risk.
 
-### Data Limitations & Assumptions 
+### Limitations
+Historical loss drivers and claims data are assumed to be broadly representative of future interstellar operations, despite potential changes in environment and scale. Route risk classifications (1–5) are assumed to capture key drivers such as debris density, radiation exposure, and navigation complexity, and are used to adjust premiums. Pricing assumes constant expense (10%), risk (15%), and profit (5%) loadings across hazard areas. Stress testing parameters (e.g., λ × 0.75 for best case) are selected to reflect plausible operational changes. Inflation is approximated using a recent moving average, and limited data for Bayesia and Oryn Delta are supplemented by assuming similar behaviour to existing systems
+
+### Data Limitations
 Claims data are based on similar businesses, so future experience may differ due to changes in workforce, operations, and environmental conditions. Limited system-specific data for Bayesia and Oryn Delta introduces uncertainty in frequency and severity estimates. The use of Poisson and lognormal models may not fully capture extreme tail risks. Additionally, assumptions of independence and reliance on historical parameters (e.g., inflation, discount rates) may underestimate correlated risks and future loss volatility. 
 
 This page is written in Markdown.
