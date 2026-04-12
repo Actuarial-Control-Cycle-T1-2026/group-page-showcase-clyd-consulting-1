@@ -4,15 +4,21 @@
 _"Tell me and I forget. Teach me and I remember. Involve me and I learn." – Benjamin Franklin_
 
 ---
+Team Members: Lisa Cheng, Yi Yao Wang, Connie Gu, Deetya Jugnarain
 
 ### Project Overview
 This project develops actuarial insurance solutions for Cosmic Quarry Mining Corporation (CQMC), focusing on pricing, risk assessment, and product design across its interstellar mining operations. The aim is to provide data-driven recommendations to Galaxy General Insurance Company on how to structure insurance products that effectively manage risk while maintaining profitability.
 
 The analysis covers four key hazard areas, each representing a distinct source of operational risk:
 - Equipment Failure: Low-frequency, high-severity breakdowns of specialised mining machinery, requiring protection against large, unexpected losses.
-- Cargo Loss: 
+- Cargo Loss: Low-frequency and high severity events driven primarily by environmental hazards. Requires policy to protect policholders from catastrophic losses as CQMC expands its mining operatins and interstellar transportation networks. 
 - Workers’ Compensation: 
-- Business Interruption: 
+- Business Interruption:
+
+### Product Design
+
+- Interstellar Cargo Protection Policy (ICPP): Only insures cargo shipments damaged or obstructed due to high debris density on-route or extreme solar radiation exposure. Annual premiums charged depending on varying risk route rating. Staggered deductible rate from 5% - 10% for risk levels 1 - 5 reflects the proportional change in risk. 
+
 
 > Now it's time to build your own website to showcase your work.  
 > Creating a website using GitHub Pages is simple and a great way to present your project.
