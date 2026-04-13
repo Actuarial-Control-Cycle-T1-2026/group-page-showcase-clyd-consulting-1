@@ -28,6 +28,7 @@ Our pricing models are calibrated using historical claims experience from compar
 Additional CQMC-specific data was provided to inform our understanding of their exposure profile:
 - [CQMC Inventory](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-cosmic-quarry-inventory.xlsx)
 - [CQMC Personnel](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-cosmic-quarry-personnel.xlsx)
+- [Online Encyclopedia Entry](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-enc.pdf)
 
 # Product Design
 
