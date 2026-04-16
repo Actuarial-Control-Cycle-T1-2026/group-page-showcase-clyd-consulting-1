@@ -15,6 +15,7 @@ The analysis covers four key hazard areas, each representing a distinct source o
 - Cargo Loss: Low-frequency and high-severity events driven primarily by environmental hazards. Requires policy to protect policyholders from catastrophic losses as CQMC expands its mining operations and interstellar transportation networks.
   
 - Workers’ Compensation: High-frequency, moderate-severity claims arising from workplace injuries in mining operations. Risk is driven by factors such as worker experience, safety compliance and operational intensity. As CQMC expands its workforce across multiple solar systems, exposure to workplace incidents increases, requiring structured coverage to manage frequent claims while protecting against more severe injury events.
+  
 - Business Interruption: Low-frequency and high-severity risk profile, with many policies recording no claims but a few very large losses creating a right-skewed distribution. This means extreme losses remain important for pricing and capital planning. The proposed Operational Continuity Cover (OCC) protects against downtime-related losses, with a time deductible targeting major interruptions and a monetary deductible plus policy limit helping control smaller and very large claims.
 
 ---
