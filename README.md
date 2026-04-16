@@ -36,6 +36,7 @@ Additional CQMC-specific data was provided to inform our understanding of their 
 Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias.
 
 # Product Design
+- The Galaxy General Equipment Failure Shield (EFS) is an indemnity-based product covering sudden and unforeseen equipment breakdowns, designed for a low-frequency, high-severity risk profile where most units have no claims but a small number produce large losses. The product includes a Đ50,000 deductible to filter out minor attritional claims and a Đ400,000 per-occurrence policy limit to contain extreme tail losses while still covering most material events. Coverage excludes wear and tear, excessive usage, and inadequate maintenance, supporting stronger risk selection, capital protection, and pricing stability across different solar systems.
 
 - Interstellar Cargo Protection Policy (ICPP): Only insures cargo shipments damaged or obstructed due to high debris density on-route or extreme solar radiation exposure. Annual premiums charged depending on varying risk route rating. Staggered deductible rate from 5% - 10% for risk levels 1 - 5 reflects the proportional change in risk.
   
