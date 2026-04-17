@@ -42,7 +42,10 @@ Additional CQMC-specific data was provided to inform our understanding of their 
 - [Online Encyclopedia Entry](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-enc.pdf)
 
 ### Data Cleaning 
-Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias. Example code snippet is below: 
+Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias. 
+
+<details>
+<summary> Example code snippet here  </summary>
 ```r
 equip_freq <- equip_freq %>%
   clean_names() %>%
@@ -83,6 +86,7 @@ equip_freq <- equip_freq %>%
     claim_count >= 0 & claim_count <= 3
   )
 ```
+</details>
 
 ## Product Design
 Our product design framework focuses on aligning coverage structure with the underlying risk profile of each hazard area. Across all products, key features such as deductibles, waiting periods, policy limits and risk-based pricing are used to reduce exposure to frequent, low-severity claims while maintaining protection against high-impact events. This ensures both pricing sustainability and effective risk transfer for CQMC.
