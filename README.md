@@ -46,6 +46,7 @@ Before modelling, all four claim datasets were cleaned using a consistent valida
 
 <details>
 <summary> Example code snippet here  </summary>
+    <pre><code></code> 
 ```r
 equip_freq <- equip_freq %>%
   clean_names() %>%
@@ -84,7 +85,9 @@ equip_freq <- equip_freq %>%
     usage_int >= 0 & usage_int <= 24,
     exposure > 0 & exposure <= 1,
     claim_count >= 0 & claim_count <= 3
-  )
+  )  
+</code></pre>
+</details>
 </details>
 
 ## Product Design
