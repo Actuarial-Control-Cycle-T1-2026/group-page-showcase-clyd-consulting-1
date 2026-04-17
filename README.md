@@ -146,6 +146,9 @@ Claims data are based on similar businesses, so future experience may differ due
 
 > Be creative! You can embed or link your [data](player_data_salaries_2020.csv), [code](sample-data-clean.ipynb), and [images](ACC.png) here.
 
+Full report + appendix can be found [here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/ACTL4001%20SOA%20asm.pdf)
+> 
+
 More information on GitHub Pages can be found [here](https://pages.github.com/).
 
 ![](Actuarial.gif)
