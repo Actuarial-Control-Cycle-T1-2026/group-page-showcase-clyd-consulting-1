@@ -49,26 +49,26 @@ Before modelling, all four claim datasets were cleaned using a consistent valida
 ```r
 equip_freq <- equip_freq %>%
   clean_names() %>%
-  
-  # trim spaces in character columns
+**  
+  # trim spaces in character columns**
   mutate(across(where(is.character), str_trim)) %>%
   
-  # turn any character entry containing ? into NA
+**  # turn any character entry containing ? into NA**
   mutate(across(where(is.character), ~ifelse(grepl("\\?", .x), NA, .x))) %>%
-  
-  # turn blank character entries into NA
+**  
+ ** # turn blank character entries into NA****
   mutate(across(where(is.character), ~na_if(.x, ""))) %>%
   
-  # remove everything after underscore for remaining character values
+**  # remove everything after underscore for remaining character values**
   mutate(across(where(is.character), ~sub("_.*", "", .x))) %>%
   
-  # remove rows with any NA
+**  # remove rows with any NA**
   drop_na() %>%
   
-  # remove duplicates
+**  # remove duplicates**
   distinct() %>%
   
-  # convert numeric fields
+**  # convert numeric fields**
   mutate(
     equipment_age   = as.numeric(equipment_age),
     maintenance_int = as.numeric(maintenance_int),
@@ -77,7 +77,7 @@ equip_freq <- equip_freq %>%
     claim_count     = as.numeric(claim_count)
   ) %>%
   
-  # keep only values within dictionary ranges
+**  # keep only values within dictionary ranges**
   filter(
     equipment_age >= 0 & equipment_age <= 10,
     maintenance_int >= 100 & maintenance_int <= 5000,
@@ -85,7 +85,6 @@ equip_freq <- equip_freq %>%
     exposure > 0 & exposure <= 1,
     claim_count >= 0 & claim_count <= 3
   )
-```
 </details>
 
 ## Product Design
