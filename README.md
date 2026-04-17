@@ -105,6 +105,7 @@ Interstellar Cargo Protection Policy (ICPP): Only insures cargo shipments damage
 <details>
 <summary> StellarCare Protection Plan (SCPP) </summary>
 StellarCare Protection Plan (SCPP) provides indemnity cover for work-related injuries, including medical expenses, wage replacement and rehabilitation costs. The product includes a 21-day waiting period, a Đ5,000 deductible and a Đ30,000 policy limit to reduce high-frequency, low-severity claims while maintaining protection against more serious injuries. Rehabilitation support is included to reduce long-duration and psychological claims, while premiums are adjusted by occupation and solar system to reflect underlying risk differences.
+  To view full code + EDA for product design [Click Here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Workers'%20Compensation%20Code). 
 
 </details>
 <details>
@@ -118,6 +119,7 @@ Operational Continuity Cover (OCC): Provides partial indemnity cover that protec
 - Cargo Loss: The cargo loss portfolio exhibits a bimodal severity distribution with significant tail risk driven by rare but catastrophic events. Expected losses are moderate (Đ3.77M), but extreme outcomes remain substantial (P99: Đ72.5M). The ICPP is financially sustainable, generating positive net revenue in both the short term (Đ0.71M) and long term (Đ0.80M) as costs and returns grow with inflation. The product reduces expected losses by ~33% and volatility by 44%, with strong protection against extreme losses (P99 ↓ 40%). Effectiveness increases under stress, with loss reductions rising to 42% and 53%, demonstrating robust tail-risk mitigation and pricing sustainability.
   
 - Workers’ Compensation: The portfolio exhibits a high-frequency, moderate-severity profile with relatively stable loss patterns. Expected loss decreases from approximately Đ3.51M to Đ3.06M after product design, where deductibles and waiting periods are effective in reducing frequent claims.  Overall, the SCPP reduces volatility while maintaining adequate protection. However, capital requirements increase slightly due to concentration in more severe claims.
+  To view full code + EDA for pricing and capital modelling [Click Here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Workers'%20Compensation%20Code). 
 
 - Business Interruption: The selected OCC structure uses a 21-day waiting period, Đ150,000 deductible, 80% coinsurance and a Đ400,000 policy limit to reduce insurer liability while preserving cover for major interruption events. Before OCC, the simulated BI portfolio had an expected aggregate loss of Đ8.50 B, with tail losses reaching Đ8.66 B at the 95th percentile and Đ8.73 B at the 99th percentile. After OCC, the expected aggregate loss fell to Đ1.88 B, with clear reductions in both average and extreme losses. Stress testing also showed the cover remained effective under adverse scenarios, supporting affordability and lowering capital strain by concentrating protection on high-impact interruptions.
 
