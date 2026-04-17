@@ -154,6 +154,3 @@ Claims data are based on similar businesses, so future experience may differ due
 [Workers' Compensation](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Workers'%20Compensation%20Code)
 
 Full report + appendix can be found [here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/ACTL4001%20SOA%20asm.pdf)
-
-
-![](Actuarial.gif)
