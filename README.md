@@ -1,8 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/FxAEmrI0)
 # Actuarial Theory and Practice A
 
-_"Tell me and I forget. Teach me and I remember. Involve me and I learn." – Benjamin Franklin_
-
 ---
 Team Members: Lisa Cheng, Yi Yao Wang, Connie Gu, Deetya Jugnarain
 
@@ -34,7 +32,47 @@ Additional CQMC-specific data was provided to inform our understanding of their 
 - [Online Encyclopedia Entry](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-enc.pdf)
 
 ## Data Cleaning 
-Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias.
+Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias. Example code snippet is below: 
+```r
+equip_freq <- equip_freq %>%
+  clean_names() %>%
+  
+  # trim spaces in character columns
+  mutate(across(where(is.character), str_trim)) %>%
+  
+  # turn any character entry containing ? into NA
+  mutate(across(where(is.character), ~ifelse(grepl("\\?", .x), NA, .x))) %>%
+  
+  # turn blank character entries into NA
+  mutate(across(where(is.character), ~na_if(.x, ""))) %>%
+  
+  # remove everything after underscore for remaining character values
+  mutate(across(where(is.character), ~sub("_.*", "", .x))) %>%
+  
+  # remove rows with any NA
+  drop_na() %>%
+  
+  # remove duplicates
+  distinct() %>%
+  
+  # convert numeric fields
+  mutate(
+    equipment_age   = as.numeric(equipment_age),
+    maintenance_int = as.numeric(maintenance_int),
+    usage_int       = as.numeric(usage_int),
+    exposure        = as.numeric(exposure),
+    claim_count     = as.numeric(claim_count)
+  ) %>%
+  
+  # keep only values within dictionary ranges
+  filter(
+    equipment_age >= 0 & equipment_age <= 10,
+    maintenance_int >= 100 & maintenance_int <= 5000,
+    usage_int >= 0 & usage_int <= 24,
+    exposure > 0 & exposure <= 1,
+    claim_count >= 0 & claim_count <= 3
+  )
+```
 
 # Product Design
 - The Galaxy General Equipment Failure Shield (EFS) is an indemnity-based product covering sudden and unforeseen equipment breakdowns, designed for a low-frequency, high-severity risk profile where most units have no claims but a small number produce large losses. The product includes a Đ50,000 deductible to filter out minor attritional claims and a Đ400,000 per-occurrence policy limit to contain extreme tail losses while still covering most material events. Coverage excludes wear and tear, excessive usage, and inadequate maintenance, supporting stronger risk selection, capital protection, and pricing stability across different solar systems.
@@ -64,10 +102,6 @@ Historical loss drivers and claims data are assumed to be broadly representative
 ## Data Limitations
 Claims data are based on similar businesses, so future experience may differ due to changes in workforce, operations, and environmental conditions. Limited system-specific data for Bayesia and Oryn Delta introduces uncertainty in frequency and severity estimates. The use of Poisson and lognormal models may not fully capture extreme tail risks. Additionally, assumptions of independence and reliance on historical parameters (e.g., inflation, discount rates) may underestimate correlated risks and future loss volatility. 
 
-This page is written in Markdown.
-- Click the [assignment link](https://classroom.github.com/a/FxAEmrI0) to accept your assignment.
-
----
 
 > Be creative! You can embed or link your [data](player_data_salaries_2020.csv), [code](sample-data-clean.ipynb), and [images](ACC.png) here.
 
