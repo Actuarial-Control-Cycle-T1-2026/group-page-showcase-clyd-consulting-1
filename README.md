@@ -46,7 +46,7 @@ Additional CQMC-specific data was provided to inform our understanding of their 
 Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias. 
 
 <details>
-<summary> Example code snippet here  </summary>
+<summary style="color: #555;"> Example code snippet here  </summary>
     <pre><code></code> 
 ```r
 equip_freq <- equip_freq %>%
@@ -95,23 +95,21 @@ equip_freq <- equip_freq %>%
 Our product design framework focuses on aligning coverage structure with the underlying risk profile of each hazard area. Across all products, key features such as deductibles, waiting periods, policy limits and risk-based pricing are used to reduce exposure to frequent, low-severity claims while maintaining protection against high-impact events. This ensures both pricing sustainability and effective risk transfer for CQMC.
 
 <details>
-<summary> The Galaxy General Equipment Failure Shield (EFS) </summary>
+<summary style="color: #555;"> The Galaxy General Equipment Failure Shield (EFS) </summary>
 The Galaxy General Equipment Failure Shield (EFS) is an indemnity-based product covering sudden and unforeseen equipment breakdowns, designed for a low-frequency, high-severity risk profile where most units have no claims but a small number produce large losses. The product includes a Đ50,000 deductible to filter out minor attritional claims and a Đ400,000 per-occurrence policy limit to contain extreme tail losses while still covering most material events. Coverage excludes wear and tear, excessive usage, and inadequate maintenance, supporting stronger risk selection, capital protection, and pricing stability across different solar systems.
 </details>
 <details>
-<summary> Interstellar Cargo Protection Policy (ICPP) </summary>
+<summary style="color: #555;"> Interstellar Cargo Protection Policy (ICPP) </summary>
 Interstellar Cargo Protection Policy (ICPP): Only insures cargo shipments damaged or obstructed due to high debris density on-route or extreme solar radiation exposure. Annual premiums charged depending on varying risk route rating. Staggered deductible rate from 5% - 10% for risk levels 1 - 5 reflects the proportional change in risk.
 
 </details>
 <details>
-<summary> StellarCare Protection Plan (SCPP) </summary>
+<summary style="color: #555;"> StellarCare Protection Plan (SCPP) </summary>
 StellarCare Protection Plan (SCPP) provides indemnity cover for work-related injuries, including medical expenses, wage replacement and rehabilitation costs. The product includes a 21-day waiting period, a Đ5,000 deductible and a Đ30,000 policy limit to reduce high-frequency, low-severity claims while maintaining protection against more serious injuries. Rehabilitation support is included to reduce long-duration and psychological claims, while premiums are adjusted by occupation and solar system to reflect underlying risk differences.
-    
-To view full code + EDA for product design [Click here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Workers'%20Compensation%20Code).
     
 </details>
 <details>
-<summary> Operational Continuity Cover (OCC) </summary>
+<summary style="color: #555;"> Operational Continuity Cover (OCC) </summary>
 Operational Continuity Cover (OCC): Provides partial indemnity cover that protects CQMC while keeping insurer exposure sustainable. The results show that, after applying the waiting period, deductible, coinsurance and policy limits, only 56.6% of losses remain payable, meaning the policy still covers meaningful interruption events while filtering out smaller losses. Although expected losses remain material, the tighter design reduces tail risk and lowers premiums, making the cover more affordable and insurable.
 </details>
 
@@ -121,7 +119,7 @@ Operational Continuity Cover (OCC): Provides partial indemnity cover that protec
 - Cargo Loss: The cargo loss portfolio exhibits a bimodal severity distribution with significant tail risk driven by rare but catastrophic events. Expected losses are moderate (Đ3.77M), but extreme outcomes remain substantial (P99: Đ72.5M). The ICPP is financially sustainable, generating positive net revenue in both the short term (Đ0.71M) and long term (Đ0.80M) as costs and returns grow with inflation. The product reduces expected losses by ~33% and volatility by 44%, with strong protection against extreme losses (P99 ↓ 40%). Effectiveness increases under stress, with loss reductions rising to 42% and 53%, demonstrating robust tail-risk mitigation and pricing sustainability.
   
 - Workers’ Compensation: The portfolio exhibits a high-frequency, moderate-severity profile with relatively stable loss patterns. Expected loss decreases from approximately Đ3.51M to Đ3.06M after product design, where deductibles and waiting periods are effective in reducing frequent claims.  Overall, the SCPP reduces volatility while maintaining adequate protection. However, capital requirements increase slightly due to concentration in more severe claims.
-  To view full code + EDA for pricing and capital modelling [Click here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Workers'%20Compensation%20Code). 
+
 
 - Business Interruption: The selected OCC structure uses a 21-day waiting period, Đ150,000 deductible, 80% coinsurance and a Đ400,000 policy limit to reduce insurer liability while preserving cover for major interruption events. Before OCC, the simulated BI portfolio had an expected aggregate loss of Đ8.50 B, with tail losses reaching Đ8.66 B at the 95th percentile and Đ8.73 B at the 99th percentile. After OCC, the expected aggregate loss fell to Đ1.88 B, with clear reductions in both average and extreme losses. Stress testing also showed the cover remained effective under adverse scenarios, supporting affordability and lowering capital strain by concentrating protection on high-impact interruptions.
 
@@ -130,6 +128,7 @@ Operational Continuity Cover (OCC): Provides partial indemnity cover that protec
 The Helionis Cluster faces higher operational strain due to dense debris and unstable conditions, increasing the likelihood of cargo loss, equipment damage, worker injury, and business interruption. The Bayesia System is relatively more controlled, with stable routes reducing operational risk, although high solar radiation remains a key driver of severe losses. Oryn Delta is the most fragile, as navigation instability, low visibility, and communication limitations amplify failures across all hazard areas. Overall, Helionis and Oryn Delta present higher risk, while Bayesia is comparatively more resilient but still exposed to radiation-driven severity risk. 
 
 ## Threats Ranking 
+
 | Rank | Threat | Impact | Mitigation |
 | :--- | :--- | :--- | :--- |
 | **1** | Catastrophic workplace incidents (e.g. machinery failures, major accidents) | Drives tail risk and capital strain by increasing p99 losses, creating multi-injury events, and raising aggregate losses and capital requirements. | Strengthen safety controls through preventive maintenance, monitoring, and incident planning. |
