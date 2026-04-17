@@ -96,6 +96,18 @@ equip_freq <- equip_freq %>%
 ## Risk Assessment
 The Helionis Cluster faces higher operational strain due to dense debris and unstable conditions, increasing the likelihood of cargo loss, equipment damage, worker injury, and business interruption. The Bayesia System is relatively more controlled, with stable routes reducing operational risk, although high solar radiation remains a key driver of severe losses. Oryn Delta is the most fragile, as navigation instability, low visibility, and communication limitations amplify failures across all hazard areas. Overall, Helionis and Oryn Delta present higher risk, while Bayesia is comparatively more resilient but still exposed to radiation-driven severity risk. 
 
+## Threats Ranking 
+| Rank | Threat | Impact | Mitigation |
+| :--- | :--- | :--- | :--- |
+| **1** | Catastrophic workplace incidents (e.g. machinery failures, major accidents) | Drives tail risk and capital strain by increasing p99 losses, creating multi-injury events, and raising aggregate losses and capital requirements. | Strengthen safety controls through preventive maintenance, monitoring, and incident planning. |
+| **2** | Gravitational shear in asymmetric ring (Oryn Delta) | Causes equipment instability and structural stress, leading to severe breakdowns, operational disruption, and large correlated losses. | Apply tighter coverage terms, higher deductibles, and stricter risk selection in ring zones. |
+| **3** | High asteroid debris density | Increases both claim frequency and severity by raising the likelihood of cargo losses and equipment failure. | Implement enhanced shielding requirements and stricter debris monitoring protocols, especially in Helionis. |
+| **4** | High solar radiation exposure | Degrades cargo and increases severity risk for shielding-dependent systems. | Require stronger radiation shielding, hardened storage systems, and tighter operating limits. |
+| **5** | Supply chain interruption | Increases claim frequency through delays in repair, replacement, and operations. | Diversify suppliers and maintain strong inventory buffers. |
+| **6** | Insufficient energy backup capacity | Reduces system resilience and increases severity of operational disruptions. | Increase redundancy standards and backup capacity requirements. |
+
+
+
 ## Limitations
 Historical loss drivers and claims data are assumed to be broadly representative of future interstellar operations, despite potential changes in environment and scale. Route risk classifications (1–5) are assumed to capture key drivers such as debris density, radiation exposure, and navigation complexity, and are used to adjust premiums. Pricing assumes constant expense (10%), risk (15%), and profit (5%) loadings across hazard areas. Stress testing parameters (e.g., λ × 0.75 for best case) are selected to reflect plausible operational changes. Inflation is approximated using a recent moving average, and limited data for Bayesia and Oryn Delta are supplemented by assuming similar behaviour to existing systems
 
