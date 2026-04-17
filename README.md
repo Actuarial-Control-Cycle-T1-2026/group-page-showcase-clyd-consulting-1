@@ -92,7 +92,7 @@ StellarCare Protection Plan (SCPP) provides indemnity cover for work-related inj
 <details>
 <summary> Operational Continuity Cover (OCC) </summary>
 Operational Continuity Cover (OCC): Provides partial indemnity cover that protects CQMC while keeping insurer exposure sustainable. The results show that, after applying the waiting period, deductible, coinsurance and policy limits, only 56.6% of losses remain payable, meaning the policy still covers meaningful interruption events while filtering out smaller losses. Although expected losses remain material, the tighter design reduces tail risk and lowers premiums, making the cover more affordable and insurable.
-
+</div>
 ## Summary of Pricing & Capital Modelling 
 - Equipment Failure: Aggregate losses were modelled using a compound frequency–severity approach, and the proposed EFS materially reduces retained loss through its deductible and policy limit structure. The gross portfolio premium is Đ141.4M, derived from an expected net loss of Đ108.8M, plus a 15% risk margin of Đ16.3M, 10% expense loading of Đ10.9M, and 5% profit margin of Đ5.4M, giving a per-unit rate of Đ6,171. Pricing is also differentiated by solar system to reflect underlying risk differences, with premium per exposure unit of Đ5,446 for Epsilon, Đ7,307 for Helionis Cluster, and Đ6,391 for Zeta, corresponding to portfolio premiums of Đ50.4M, Đ33.2M, and Đ58.4M, respectively.
   
