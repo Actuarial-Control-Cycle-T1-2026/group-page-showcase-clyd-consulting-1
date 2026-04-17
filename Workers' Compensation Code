@@ -1,0 +1,494 @@
+# =========================================================
+# WORKERS' COMPENSATION ANALYSIS
+# =========================================================
+
+# -------------------------
+# 0. Packages and file paths
+# -------------------------
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(MASS)
+
+file_wc        <- "srcsc-2026-claims-workers-comp.xlsx"
+file_macro     <- "srcsc-2026-interest-and-inflation.xlsx"
+file_personnel <- "srcsc-2026-cosmic-quarry-personnel.xlsx"
+
+# -------------------------
+# 1. Validation rules
+# -------------------------
+valid_systems <- c("Epsilon", "Helionis Cluster", "Zeta")
+valid_hours   <- c(20, 25, 30, 35, 40)
+valid_index   <- c(1, 2, 3, 4, 5)
+valid_claims  <- c(0, 1, 2)
+valid_emp     <- c("Full time", "Contract")
+
+# -------------------------
+# 2. Load raw data
+# -------------------------
+freq_raw      <- read_excel(file_wc, sheet = "freq")
+sev_raw       <- read_excel(file_wc, sheet = "sev")
+macro_raw     <- read_excel(file_macro, skip = 2)
+personnel_raw <- read_excel(file_personnel)
+
+# -------------------------
+# 3. Macro assumptions
+# -------------------------
+names(macro_raw) <- c("year", "inflation", "overnight_rate", "rf_1y", "rf_10y")
+
+infl_ma <- mean(tail(macro_raw$inflation, 3), na.rm = TRUE)
+rf1y_ma <- mean(tail(macro_raw$rf_1y, 3), na.rm = TRUE)
+discount_rate <- rf1y_ma
+
+# -------------------------
+# 4. CQMC personnel data
+# -------------------------
+personnel <- personnel_raw %>%
+  slice(-1, -2) %>%
+  setNames(c("role", "num_employees", "full_time", "contract", "avg_salary", "avg_age")) %>%
+  mutate(across(c(num_employees, full_time, contract, avg_salary, avg_age), as.numeric)) %>%
+  filter(!is.na(num_employees), num_employees > 0)
+
+total_workers <- sum(personnel$num_employees)
+
+# -------------------------
+# 5. Clean frequency data
+# -------------------------
+freq <- freq_raw %>%
+  mutate(
+    system           = sub("_.*", "", trimws(solar_system)),
+    occupation_clean = sub("_.*", "", trimws(occupation)),
+    station_clean    = sub("_.*", "", trimws(station_id)),
+    employment_type  = trimws(employment_type),
+    employment_type  = recode(
+      employment_type,
+      "Full-time" = "Full time",
+      "Full time" = "Full time",
+      "Contract"  = "Contract"
+    )
+  ) %>%
+  filter(
+    !is.na(system), system %in% valid_systems,
+    !is.na(occupation_clean), occupation_clean != "",
+    !is.na(station_clean), station_clean != "",
+    !is.na(employment_type), employment_type %in% valid_emp,
+    !is.na(exposure), exposure >= 0, exposure <= 1,
+    !is.na(claim_count), claim_count %in% valid_claims,
+    !is.na(experience_yrs), experience_yrs >= 0.2, experience_yrs <= 40,
+    !is.na(accident_history_flag), accident_history_flag %in% c(0, 1),
+    !is.na(psych_stress_index), psych_stress_index %in% valid_index,
+    !is.na(hours_per_week), hours_per_week %in% valid_hours,
+    !is.na(supervision_level), supervision_level >= 0, supervision_level <= 1,
+    !is.na(gravity_level), gravity_level >= 0.75, gravity_level <= 1.50,
+    !is.na(safety_training_index), safety_training_index %in% valid_index,
+    !is.na(protective_gear_quality), protective_gear_quality %in% valid_index,
+    !is.na(base_salary), base_salary >= 20000, base_salary <= 130000
+  )
+
+# -------------------------
+# 6. Clean severity data
+# -------------------------
+sev <- sev_raw %>%
+  mutate(
+    system           = sub("_.*", "", trimws(solar_system)),
+    occupation_clean = sub("_.*", "", trimws(occupation)),
+    station_clean    = sub("_.*", "", trimws(station_id)),
+    injury_type      = sub("_.*", "", trimws(injury_type)),
+    injury_cause     = sub("_.*", "", trimws(injury_cause)),
+    employment_type  = trimws(employment_type),
+    employment_type  = recode(
+      employment_type,
+      "Full-time" = "Full time",
+      "Full time" = "Full time",
+      "Contract"  = "Contract"
+    )
+  ) %>%
+  filter(
+    !is.na(system), system %in% valid_systems,
+    !is.na(occupation_clean), occupation_clean != "",
+    !is.na(station_clean), station_clean != "",
+    !is.na(employment_type), employment_type %in% valid_emp,
+    !is.na(experience_yrs), experience_yrs >= 0.2, experience_yrs <= 40,
+    !is.na(accident_history_flag), accident_history_flag %in% c(0, 1),
+    !is.na(psych_stress_index), psych_stress_index %in% valid_index,
+    !is.na(hours_per_week), hours_per_week %in% valid_hours,
+    !is.na(supervision_level), supervision_level >= 0, supervision_level <= 1,
+    !is.na(gravity_level), gravity_level >= 0.75, gravity_level <= 1.50,
+    !is.na(safety_training_index), safety_training_index %in% valid_index,
+    !is.na(protective_gear_quality), protective_gear_quality %in% valid_index,
+    !is.na(base_salary), base_salary >= 20000, base_salary <= 130000,
+    !is.na(claim_length), claim_length >= 3, claim_length <= 1000,
+    !is.na(claim_amount), claim_amount > 0
+  )
+
+cat("Frequency rows kept:", nrow(freq), "\n")
+cat("Severity rows kept:", nrow(sev), "\n")
+
+# =========================================================
+# 7. EDA
+# =========================================================
+
+occ_freq <- freq %>%
+  group_by(occupation_clean) %>%
+  summarise(
+    total_claims   = sum(claim_count, na.rm = TRUE),
+    total_exposure = sum(exposure, na.rm = TRUE),
+    claim_rate     = total_claims / total_exposure,
+    .groups = "drop"
+  ) %>%
+  arrange(desc(claim_rate))
+
+occ_sev <- sev %>%
+  group_by(occupation_clean) %>%
+  summarise(
+    claims       = n(),
+    mean_claim   = mean(claim_amount, na.rm = TRUE),
+    median_claim = median(claim_amount, na.rm = TRUE),
+    p95_claim    = quantile(claim_amount, 0.95, na.rm = TRUE),
+    max_claim    = max(claim_amount, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_claim))
+
+freq_system <- freq %>%
+  group_by(system) %>%
+  summarise(
+    total_claims   = sum(claim_count, na.rm = TRUE),
+    total_exposure = sum(exposure, na.rm = TRUE),
+    claim_rate     = total_claims / total_exposure,
+    .groups = "drop"
+  )
+
+sev_system <- sev %>%
+  group_by(system) %>%
+  summarise(
+    claims       = n(),
+    mean_claim   = mean(claim_amount, na.rm = TRUE),
+    median_claim = median(claim_amount, na.rm = TRUE),
+    p95_claim    = quantile(claim_amount, 0.95, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+claim_length_summary <- sev %>%
+  summarise(
+    mean_days   = mean(claim_length, na.rm = TRUE),
+    median_days = median(claim_length, na.rm = TRUE),
+    p95_days    = quantile(claim_length, 0.95, na.rm = TRUE),
+    max_days    = max(claim_length, na.rm = TRUE)
+  )
+
+injury_type_mix <- sev %>%
+  filter(!is.na(injury_type), injury_type != "") %>%
+  count(injury_type, sort = TRUE) %>%
+  mutate(prop = n / sum(n))
+
+injury_cause_mix <- sev %>%
+  filter(!is.na(injury_cause), injury_cause != "") %>%
+  count(injury_cause, sort = TRUE) %>%
+  mutate(prop = n / sum(n))
+
+# -------------------------
+# EDA plots
+# -------------------------
+ggplot(occ_freq, aes(x = reorder(occupation_clean, claim_rate), y = claim_rate)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Claim Frequency by Occupation", x = "Occupation", y = "Claims per Exposure")
+
+ggplot(sev, aes(x = occupation_clean, y = claim_amount)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Claim Severity by Occupation", x = "Occupation", y = "Claim Amount")
+
+ggplot(sev, aes(x = claim_length, y = claim_amount)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Claim Length vs Claim Amount", x = "Claim Length", y = "Claim Amount")
+
+ggplot(freq_system, aes(x = system, y = claim_rate)) +
+  geom_col() +
+  labs(title = "Claim Rate by Solar System", x = "Solar System", y = "Claims per Exposure")
+
+# =========================================================
+# 8. Modelling data
+# =========================================================
+freq_mod_data <- freq %>%
+  mutate(
+    system = factor(system),
+    occupation_clean = factor(occupation_clean),
+    employment_type = factor(employment_type),
+    accident_history_flag = factor(accident_history_flag),
+    psych_stress_index = factor(psych_stress_index),
+    safety_training_index = factor(safety_training_index),
+    protective_gear_quality = factor(protective_gear_quality)
+  )
+
+sev_mod_data <- sev %>%
+  mutate(
+    system = factor(system),
+    occupation_clean = factor(occupation_clean),
+    employment_type = factor(employment_type),
+    accident_history_flag = factor(accident_history_flag),
+    psych_stress_index = factor(psych_stress_index),
+    safety_training_index = factor(safety_training_index),
+    protective_gear_quality = factor(protective_gear_quality)
+  )
+
+# =========================================================
+# 9. Frequency model
+# =========================================================
+pois_mod <- glm(
+  claim_count ~ system + occupation_clean + employment_type + experience_yrs +
+    accident_history_flag + psych_stress_index + hours_per_week +
+    supervision_level + gravity_level + safety_training_index +
+    protective_gear_quality + base_salary,
+  family = poisson(link = "log"),
+  offset = log(exposure),
+  data = freq_mod_data
+)
+
+poisson_dispersion <- sum(residuals(pois_mod, type = "pearson")^2) / pois_mod$df.residual
+
+if (poisson_dispersion > 1.2) {
+  freq_model <- glm.nb(
+    claim_count ~ system + occupation_clean + employment_type + experience_yrs +
+      accident_history_flag + psych_stress_index + hours_per_week +
+      supervision_level + gravity_level + safety_training_index +
+      protective_gear_quality + base_salary + offset(log(exposure)),
+    data = freq_mod_data
+  )
+  freq_model_type <- "Negative Binomial"
+} else {
+  freq_model <- pois_mod
+  freq_model_type <- "Poisson"
+}
+
+cat("Selected frequency model:", freq_model_type, "\n")
+
+# =========================================================
+# 10. Severity model
+# =========================================================
+sev_model <- glm(
+  log(claim_amount) ~ system + occupation_clean + employment_type + experience_yrs +
+    accident_history_flag + psych_stress_index + hours_per_week +
+    supervision_level + gravity_level + safety_training_index +
+    protective_gear_quality + base_salary + claim_length,
+  family = gaussian(),
+  data = sev_mod_data
+)
+
+sev_sigma <- sigma(sev_model)
+
+# =========================================================
+# 11. Baseline pricing inputs
+# =========================================================
+freq_mod_data$pred_claims <- predict(freq_model, newdata = freq_mod_data, type = "response")
+
+lambda_system <- freq_mod_data %>%
+  group_by(system) %>%
+  summarise(
+    expected_claims   = sum(pred_claims),
+    total_exposure    = sum(exposure),
+    fitted_claim_rate = expected_claims / total_exposure,
+    .groups = "drop"
+  )
+
+sev_mod_data$pred_log_claim <- predict(sev_model, newdata = sev_mod_data, type = "response")
+
+sev_system_model <- sev_mod_data %>%
+  group_by(system) %>%
+  summarise(meanlog_hat = mean(pred_log_claim, na.rm = TRUE), .groups = "drop") %>%
+  mutate(fitted_mean_severity = exp(meanlog_hat + 0.5 * sev_sigma^2))
+
+worker_split <- lambda_system %>%
+  mutate(
+    exposure_share = total_exposure / sum(total_exposure),
+    cqmc_workers   = total_workers * exposure_share
+  ) %>%
+  select(system, total_exposure, fitted_claim_rate, cqmc_workers)
+
+pricing_inputs_base <- worker_split %>%
+  left_join(sev_system_model, by = "system") %>%
+  mutate(
+    expected_claims         = fitted_claim_rate * cqmc_workers,
+    expected_loss           = expected_claims * fitted_mean_severity,
+    pure_premium_per_worker = expected_loss / cqmc_workers
+  )
+
+# =========================================================
+# 12. Product design assumptions
+# =========================================================
+medical_share <- 0.35
+wage_share    <- 0.45
+
+waiting_period_days <- 21
+deductible          <- 5000
+policy_limit        <- 30000
+
+rehab_long_claim_reduction <- 0.30
+rehab_psych_reduction      <- 0.35
+
+expense_loading <- 0.10
+risk_margin     <- 0.15
+profit_margin   <- 0.05
+
+# =========================================================
+# 13. Post-design claim adjustments
+# =========================================================
+sev_design <- sev %>%
+  mutate(
+    rehab_reduction = case_when(
+      injury_type %in% c("Stress", "Psychological") ~ rehab_psych_reduction,
+      claim_length > 30 ~ rehab_long_claim_reduction,
+      TRUE ~ 0
+    ),
+    claim_length_post = pmax(1, claim_length * (1 - rehab_reduction)),
+    claim_amount_trended = claim_amount * (1 + infl_ma)^(claim_length / 365),
+    wage_benefit_factor = ifelse(
+      claim_length_post > 0,
+      pmax(claim_length_post - waiting_period_days, 0) / claim_length_post,
+      0
+    ),
+    gross_claim_post = claim_amount_trended *
+      (medical_share + wage_share * wage_benefit_factor) / (medical_share + wage_share),
+    capped_claim_post = pmin(gross_claim_post, policy_limit),
+    net_claim_post    = pmax(capped_claim_post - deductible, 0),
+    payment_timing_years = claim_length_post / 365,
+    pv_claim_post = net_claim_post / ((1 + discount_rate)^payment_timing_years)
+  )
+
+post_design_system <- sev_design %>%
+  group_by(system) %>%
+  summarise(
+    payable_prop = mean(pv_claim_post > 0, na.rm = TRUE),
+    meanlog_post = mean(log(pv_claim_post[pv_claim_post > 0]), na.rm = TRUE),
+    sdlog_post   = sd(log(pv_claim_post[pv_claim_post > 0]), na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sdlog_post = ifelse(is.na(sdlog_post) | sdlog_post <= 0, 0.01, sdlog_post),
+    implied_mean_severity_post = exp(meanlog_post + 0.5 * sdlog_post^2)
+  )
+
+pricing_inputs_post <- worker_split %>%
+  left_join(post_design_system, by = "system") %>%
+  mutate(
+    expected_claims         = fitted_claim_rate * cqmc_workers * payable_prop,
+    expected_loss           = expected_claims * implied_mean_severity_post,
+    pure_premium_per_worker = expected_loss / cqmc_workers,
+    gross_premium_per_worker = pure_premium_per_worker * (1 + expense_loading + risk_margin + profit_margin)
+  )
+
+# =========================================================
+# 14. Simulation functions
+# =========================================================
+simulate_portfolio <- function(pricing_tbl, n_sim = 10000, seed = 123) {
+  set.seed(seed)
+
+  totals <- replicate(n_sim, {
+    total <- 0
+    for (j in 1:nrow(pricing_tbl)) {
+      n_claims <- rpois(1, pricing_tbl$expected_claims[j])
+      if (n_claims > 0) {
+        total <- total + sum(
+          rlnorm(
+            n_claims,
+            meanlog = pricing_tbl$meanlog_post[j],
+            sdlog   = pricing_tbl$sdlog_post[j]
+          )
+        )
+      }
+    }
+    total
+  })
+
+  data.frame(total_loss = totals)
+}
+
+summarise_portfolio <- function(sim_df, label) {
+  data.frame(
+    portfolio = label,
+    expected_loss = mean(sim_df$total_loss),
+    variance = var(sim_df$total_loss),
+    sd = sd(sim_df$total_loss),
+    p95 = as.numeric(quantile(sim_df$total_loss, 0.95)),
+    p99 = as.numeric(quantile(sim_df$total_loss, 0.99))
+  )
+}
+
+stress_portfolio <- function(pricing_tbl, freq_mult, sev_mult, n_sim = 10000, seed = 456) {
+  set.seed(seed)
+
+  totals <- replicate(n_sim, {
+    total <- 0
+    for (j in 1:nrow(pricing_tbl)) {
+      n_claims <- rpois(1, freq_mult * pricing_tbl$expected_claims[j])
+      if (n_claims > 0) {
+        total <- total + sum(
+          sev_mult * rlnorm(
+            n_claims,
+            meanlog = pricing_tbl$meanlog_post[j],
+            sdlog   = pricing_tbl$sdlog_post[j]
+          )
+        )
+      }
+    }
+    total
+  })
+
+  data.frame(
+    expected_loss = mean(totals),
+    p95 = as.numeric(quantile(totals, 0.95)),
+    p99 = as.numeric(quantile(totals, 0.99))
+  )
+}
+
+# =========================================================
+# 15. Baseline and post-design results
+# =========================================================
+sim_post <- simulate_portfolio(pricing_inputs_post, n_sim = 10000, seed = 123)
+summary_post <- summarise_portfolio(sim_post, "Post-design")
+print(summary_post)
+
+# =========================================================
+# 16. Stress testing
+# =========================================================
+stress_moderate <- stress_portfolio(pricing_inputs_post, 1.2, 1.25)
+stress_severe   <- stress_portfolio(pricing_inputs_post, 1.5, 1.7)
+
+stress_summary <- bind_rows(
+  data.frame(
+    scenario = "Base",
+    expected_loss = summary_post$expected_loss,
+    p95 = summary_post$p95,
+    p99 = summary_post$p99
+  ),
+  data.frame(
+    scenario = "Moderate stress",
+    expected_loss = stress_moderate$expected_loss,
+    p95 = stress_moderate$p95,
+    p99 = stress_moderate$p99
+  ),
+  data.frame(
+    scenario = "Severe stress",
+    expected_loss = stress_severe$expected_loss,
+    p95 = stress_severe$p95,
+    p99 = stress_severe$p99
+  )
+)
+
+print(stress_summary)
+
+# =========================================================
+# 17. Aggregate loss distribution
+# =========================================================
+ggplot(sim_post, aes(x = total_loss)) +
+  geom_histogram(bins = 40, color = "black", fill = "lightblue") +
+  geom_vline(xintercept = summary_post$expected_loss, linetype = "dashed") +
+  geom_vline(xintercept = summary_post$p95, linetype = "dotted") +
+  geom_vline(xintercept = summary_post$p99, linetype = "longdash") +
+  labs(
+    title = "Aggregate Loss Distribution - Workers' Compensation",
+    x = "Total Loss",
+    y = "Frequency"
+  )
