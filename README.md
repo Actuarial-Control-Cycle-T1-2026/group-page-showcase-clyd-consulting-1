@@ -1,9 +1,19 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/FxAEmrI0)
-# Actuarial Theory and Practice A
+# SOA 2026 Clyd consulting 
 
----
 Team Members: Lisa Cheng, Yi Yao Wang, Connie Gu, Deetya Jugnarain
 
+---
+## Table of Contents
+
+1. [Project Overview](#project-overview)  
+2. [Data](#data)  
+4. [Product Design](#product-design)  
+5. [Summary of Pricing & Capital Modelling](#summary-of-pricing--capital-modelling)  
+6. [Risk Assessment](#risk-assessment)  
+7. [Threats Ranking](#threats-ranking)  
+8. [Limitations](#limitations)  
+9. [Data Limitations](#data-limitations)
+    
 ## Project Overview
 This project develops actuarial insurance solutions for Cosmic Quarry Mining Corporation (CQMC), focusing on pricing, risk assessment, and product design across its interstellar mining operations. The aim is to provide data-driven recommendations to Galaxy General Insurance Company (GGIC) on how to structure insurance products that effectively manage risk while maintaining profitability.
 
@@ -31,7 +41,7 @@ Additional CQMC-specific data was provided to inform our understanding of their 
 - [CQMC Personnel](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-cosmic-quarry-personnel.xlsx)
 - [Online Encyclopedia Entry](https://www.soa.org/globalassets/assets/files/research/opportunities/2026/student-research-case-study/srcsc-2026-enc.pdf)
 
-## Data Cleaning 
+### Data Cleaning 
 Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias. Example code snippet is below: 
 ```r
 equip_freq <- equip_freq %>%
@@ -74,7 +84,7 @@ equip_freq <- equip_freq %>%
   )
 ```
 
-# Product Design
+## Product Design
 Our product design framework focuses on aligning coverage structure with the underlying risk profile of each hazard area. Across all products, key features such as deductibles, waiting periods, policy limits and risk-based pricing are used to reduce exposure to frequent, low-severity claims while maintaining protection against high-impact events. This ensures both pricing sustainability and effective risk transfer for CQMC.
 
 <details>
