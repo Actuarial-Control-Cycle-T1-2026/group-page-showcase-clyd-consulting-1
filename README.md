@@ -46,7 +46,7 @@ Additional CQMC-specific data was provided to inform our understanding of their 
 Before modelling, all four claim datasets were cleaned using a consistent validation process. Records with invalid categories, out-of-range values, or missing entries were removed if clearly invalid. Given limited visibility over how the raw data was collected, we adopted a conservative approach to preserve data integrity and reduce model bias. 
 
 <details>
-<summary style="color: #555;">Example code snippet</summary>
+<summary style="color: #555;"> > Example code snippet</summary>
 
 ```r
 equip_freq <- equip_freq %>%
