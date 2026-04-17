@@ -13,6 +13,7 @@ Team Members: Lisa Cheng, Yi Yao Wang, Connie Gu, Deetya Jugnarain
 7. [Threats Ranking](#threats-ranking)  
 8. [Limitations](#limitations)  
 9. [Data Limitations](#data-limitations)
+10. [R Code](#r-code)
     
 ## Project Overview
 This project develops actuarial insurance solutions for Cosmic Quarry Mining Corporation (CQMC), focusing on pricing, risk assessment, and product design across its interstellar mining operations. The aim is to provide data-driven recommendations to Galaxy General Insurance Company (GGIC) on how to structure insurance products that effectively manage risk while maintaining profitability.
@@ -146,12 +147,13 @@ Historical loss drivers and claims data are assumed to be broadly representative
 ## Data Limitations
 Claims data are based on similar businesses, so future experience may differ due to changes in workforce, operations, and environmental conditions. Limited system-specific data for Bayesia and Oryn Delta introduces uncertainty in frequency and severity estimates. The use of Poisson and lognormal models may not fully capture extreme tail risks. Additionally, assumptions of independence and reliance on historical parameters (e.g., inflation, discount rates) may underestimate correlated risks and future loss volatility. 
 
-
-> Be creative! You can embed or link your [data](player_data_salaries_2020.csv), [code](sample-data-clean.ipynb), and [images](ACC.png) here.
+## R Code 
+[Equipment Failure](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/equipment_failure.R)
+[Cargo Loss](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Cargo%20Loss%20Code.R)
+[Business Interruption](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Business%20Interruption%20code.R)
+[Workers' Compensation](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/Workers'%20Compensation%20Code)
 
 Full report + appendix can be found [here](https://github.com/Actuarial-Control-Cycle-T1-2026/group-page-showcase-clyd-consulting-1/blob/main/ACTL4001%20SOA%20asm.pdf)
-> 
 
-More information on GitHub Pages can be found [here](https://pages.github.com/).
 
 ![](Actuarial.gif)
